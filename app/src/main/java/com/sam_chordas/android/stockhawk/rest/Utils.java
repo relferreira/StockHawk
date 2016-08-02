@@ -1,7 +1,12 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import java.util.ArrayList;
@@ -30,7 +35,10 @@ public class Utils {
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
-          batchOperations.add(buildBatchOperation(jsonObject));
+          ContentProviderOperation value = buildBatchOperation(jsonObject);
+          if(value == null)
+            return null;
+          batchOperations.add(value);
         } else{
           resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
@@ -74,11 +82,18 @@ public class Utils {
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
     try {
+
       String change = jsonObject.getString("Change");
-      builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
-      builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
-      builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-          jsonObject.getString("ChangeinPercent"), true));
+      String symbol = jsonObject.getString("symbol");
+      String bid = jsonObject.getString("Bid");
+      String changeInPercent = jsonObject.getString("ChangeinPercent");
+
+      if(checkNullValues(change) || checkNullValues(symbol) || checkNullValues(bid) || checkNullValues(changeInPercent))
+        return null;
+
+      builder.withValue(QuoteColumns.SYMBOL, symbol);
+      builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(bid));
+      builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(changeInPercent, true));
       builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
       builder.withValue(QuoteColumns.ISCURRENT, 1);
       if (change.charAt(0) == '-'){
@@ -91,5 +106,16 @@ public class Utils {
       e.printStackTrace();
     }
     return builder.build();
+  }
+
+  private static boolean checkNullValues(String value){
+    return value == null || value.equals("null");
+  }
+
+  public static void setStockStatus(Context context, int status) {
+    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor editor = pref.edit();
+    editor.putInt(context.getString(R.string.stock_status_key), status);
+    editor.commit();
   }
 }
