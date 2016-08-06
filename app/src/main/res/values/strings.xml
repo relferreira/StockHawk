@@ -12,7 +12,8 @@
   <string name="invalid_symbol">Symbol not valid! Please try again.</string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
 
-
+  <string name="detail_activity_name">Details</string>
+  <string name="detail_date_format">"MM-dd"</string>
 
   <string name="stock_status_key" translatable="false">stock_status_key</string>
 </resources>

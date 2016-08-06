@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.view.Gravity;
@@ -40,7 +41,19 @@ import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallb
 
 public class MyStocksActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        SharedPreferences.OnSharedPreferenceChangeListener{
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        QuoteCursorAdapter.QuoteClickHandler{
+
+    private static final String[] QUOTES_PROJECTION = new String[]{
+            QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
+            QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP};
+
+    private static final int COLUMN_ID_INDEX = 0;
+    private static final int COLUMN_SYMBOL_INDEX = 1;
+    private static final int COLUMN_BIDPRICE_INDEX = 2;
+    private static final int COLUMN_PERCENT_CHANGE_INDEX = 3;
+    private static final int COLUMN_CHANGE_INDEX = 4;
+    private static final int COLUMN_ISUP_INDEX = 5;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -63,6 +76,10 @@ public class MyStocksActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -86,7 +103,7 @@ public class MyStocksActivity extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
-        mCursorAdapter = new QuoteCursorAdapter(this, null);
+        mCursorAdapter = new QuoteCursorAdapter(this, null, this);
         recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
                 new RecyclerViewItemClickListener.OnItemClickListener() {
                     @Override
@@ -221,8 +238,7 @@ public class MyStocksActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // This narrows the return to only the stocks that are most current.
         return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-                new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                QUOTES_PROJECTION,
                 QuoteColumns.ISCURRENT + " = ?",
                 new String[]{"1"},
                 null);
@@ -254,5 +270,13 @@ public class MyStocksActivity extends AppCompatActivity implements
             if (msg != null)
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onQuoteClick(int position) {
+        mCursor.moveToPosition(position);
+        Intent intent = new Intent(this, StockDetailActivity.class);
+        intent.putExtra(StockDetailActivity.ARG_SYMBOL, mCursor.getString(COLUMN_SYMBOL_INDEX));
+        startActivity(intent);
     }
 }
