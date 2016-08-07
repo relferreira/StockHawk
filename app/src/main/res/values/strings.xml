@@ -16,4 +16,7 @@
   <string name="detail_date_format">"MM-dd"</string>
 
   <string name="stock_status_key" translatable="false">stock_status_key</string>
+
+  <string name="widget_title">Today Stocks</string>
+  <string name="widget_empty_list">No Stocks Info Available!</string>
 </resources>

@@ -2,6 +2,7 @@ package com.sam_chordas.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
  */
 public class StockTaskService extends GcmTaskService {
 
+    public static final String ACTION_UPDATE_DATA = "com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED";
     public static int STATUS_OK = 0;
     public static int STATUS_UNDEFINED = 1;
     public static int STATUS_ERROR_SYMBOL = 2;
@@ -60,12 +62,13 @@ public class StockTaskService extends GcmTaskService {
     @Override
     public int onRunTask(TaskParams params) {
 
-        Utils.setStockStatus(mContext, STATUS_UNDEFINED);
-
         Cursor initQueryCursor;
         if (mContext == null) {
             mContext = this;
         }
+
+        Utils.setStockStatus(mContext, STATUS_UNDEFINED);
+
         StringBuilder urlStringBuilder = new StringBuilder();
         try {
             // Base URL for the Yahoo query
@@ -143,6 +146,9 @@ public class StockTaskService extends GcmTaskService {
                     mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                             content);
                     Utils.setStockStatus(mContext, STATUS_OK);
+
+                    Intent dataUpdatedIntent = new Intent(ACTION_UPDATE_DATA);
+                     mContext.sendBroadcast(dataUpdatedIntent);
                 } catch (RemoteException | OperationApplicationException e) {
                     Log.e(LOG_TAG, "Error applying batch insert", e);
                 }
