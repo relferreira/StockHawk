@@ -83,7 +83,6 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         List<Float> prices = new ArrayList<>(cursor.getCount());
         List<String> labels = new ArrayList<>(cursor.getCount());
-        cursor.moveToFirst();
         while(cursor.moveToNext()){
             Float price = Float.valueOf(cursor.getString(cursor.getColumnIndex("bid_price")));
             Date date = new Date(Long.valueOf(cursor.getString(cursor.getColumnIndex("created"))));
@@ -115,6 +114,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         graph.addData(dataset);
         graph.setAxisBorderValues((int)Math.floor(minValue) - 1, Math.round(maxValue) + 1);
         graph.show();
+
+        cursor.moveToPosition(-1);
     }
 
     @Override

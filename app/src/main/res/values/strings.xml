@@ -1,22 +1,30 @@
-<resources>
-  <string name="app_name">Stock Hawk</string>
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="app_name">Stock Hawk</string>
 
-  <string name="action_example">Example action</string>
+    <string name="action_example">Example action</string>
 
-  <string name="action_settings">Settings</string>
-  <string name="action_change_units">Change Units</string>
-  <string name="symbol_search">Symbol Search</string>
-  <string name="content_test">Search for a Stock Symbol</string>
-  <string name="input_hint">FB</string>
-  <string name="input_prefill"></string>
-  <string name="invalid_symbol">Symbol not valid! Please try again.</string>
-  <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_change_units">Change Units</string>
+    <string name="symbol_search">Symbol Search</string>
+    <string name="content_test">Search for a Stock Symbol</string>
+    <string name="input_hint" translatable="false">FB</string>
+    <string name="input_prefill"></string>
+    <string name="invalid_symbol">Symbol not valid! Please try again.</string>
+    <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+    <string name="empty_list">No internet connection, try again later!</string>
 
-  <string name="detail_activity_name">Details</string>
-  <string name="detail_date_format">"MM-dd"</string>
+    <string name="detail_activity_name">Details</string>
+    <string name="detail_date_format">"MM-dd"</string>
 
-  <string name="stock_status_key" translatable="false">stock_status_key</string>
+    <string name="stock_status_key" translatable="false">stock_status_key</string>
 
-  <string name="widget_title">Today Stocks</string>
-  <string name="widget_empty_list">No Stocks Info Available!</string>
+    <string name="widget_title">Today Stocks</string>
+    <string name="widget_empty_list">No Stocks Info Available!</string>
+
+    <string name="a11y_stock_symbol">Company: <xliff:g id="symbol">%1$s</xliff:g></string>
+    <string name="a11y_stock_bid">Bid Price: <xliff:g id="bid">%1$s</xliff:g></string>
+    <string name="a11y_stock_percentage">Percentage Change: <xliff:g id="percentage">%1$s</xliff:g></string>
+    <string name="a11y_stock_change">Change: <xliff:g id="change">%1$s</xliff:g></string>
+    <string name="a11y_stock_fab">Add company</string>
+    <string name="a11y_stock_graph">Graph of bid prices over time</string>
 </resources>

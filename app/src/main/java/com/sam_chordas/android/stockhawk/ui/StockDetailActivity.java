@@ -88,7 +88,6 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor cursor) {
         List<Date> dates = new ArrayList<>(cursor.getCount());
-        cursor.moveToFirst();
         while(cursor.moveToNext()){
             Date date = new Date(Long.valueOf(cursor.getString(cursor.getColumnIndex("created"))));
             Calendar c = Calendar.getInstance();
@@ -106,6 +105,7 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
         }
 
         adapter.notifyDataSetChanged();
+        cursor.moveToPosition(-1);
 
     }
 
