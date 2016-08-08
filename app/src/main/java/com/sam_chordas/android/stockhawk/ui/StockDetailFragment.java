@@ -51,7 +51,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stock_detail, container, false);
         graph = (LineChartView) view.findViewById(R.id.linechart);
-        dateFormater = new SimpleDateFormat(getString(R.string.detail_date_format));
+        dateFormater = new SimpleDateFormat(getString(R.string.detail_date_format_hours));
         return view;
     }
 
