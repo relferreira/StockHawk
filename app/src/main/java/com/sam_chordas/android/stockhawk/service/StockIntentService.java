@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 
 /**
  * Created by sam_chordas on 10/1/15.
  */
 public class StockIntentService extends IntentService {
+
+  public static final String ARG_TAG = "tag";
+  public static final String ARG_SYMBOL = "symbol";
 
   public StockIntentService(){
     super(StockIntentService.class.getName());
@@ -23,11 +27,11 @@ public class StockIntentService extends IntentService {
     Log.d(StockIntentService.class.getSimpleName(), "Stock Intent Service");
     StockTaskService stockTaskService = new StockTaskService(this);
     Bundle args = new Bundle();
-    if (intent.getStringExtra("tag").equals("add")){
-      args.putString("symbol", intent.getStringExtra("symbol"));
+    if (intent.getStringExtra(ARG_TAG).equals(getString(R.string.tag_add))){
+      args.putString(StockTaskService.ARG_SYMBOL, intent.getStringExtra(ARG_SYMBOL));
     }
     // We can call OnRunTask from the intent service to force it to run immediately instead of
     // scheduling a task.
-    stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
+    stockTaskService.onRunTask(new TaskParams(intent.getStringExtra(ARG_TAG), args));
   }
 }

@@ -12,6 +12,11 @@
     <string name="invalid_symbol">Symbol not valid! Please try again.</string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="empty_list">No internet connection, try again later!</string>
+    <string name="stock_already_stored">This stock is already saved!</string>
+
+    <string name="tag_init" translatable="false">init</string>
+    <string name="tag_add" translatable="false">add</string>
+    <string name="tag_periodic" translatable="false">periodic</string>
 
     <string name="detail_activity_name">Details</string>
     <string name="detail_date_format">"MM-dd"</string>

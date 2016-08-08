@@ -93,7 +93,7 @@ public class MyStocksActivity extends AppCompatActivity implements
         mServiceIntent = new Intent(this, StockIntentService.class);
         if (savedInstanceState == null) {
             // Run the initialize task service so that some stocks appear upon an empty database
-            mServiceIntent.putExtra("tag", "init");
+            mServiceIntent.putExtra(StockIntentService.ARG_TAG, getString(R.string.tag_init));
             if (isConnected) {
                 startService(mServiceIntent);
             } else {
@@ -139,15 +139,15 @@ public class MyStocksActivity extends AppCompatActivity implements
                                             new String[]{input.toString()}, null);
                                     if (c.getCount() != 0) {
                                         Toast toast =
-                                                Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                                                Toast.makeText(MyStocksActivity.this, getString(R.string.stock_already_stored),
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
                                         return;
                                     } else {
                                         // Add the stock to DB
-                                        mServiceIntent.putExtra("tag", "add");
-                                        mServiceIntent.putExtra("symbol", input.toString());
+                                        mServiceIntent.putExtra(StockIntentService.ARG_TAG, getString(R.string.tag_add));
+                                        mServiceIntent.putExtra(StockIntentService.ARG_SYMBOL, input.toString());
                                         startService(mServiceIntent);
                                     }
                                 }
@@ -168,7 +168,7 @@ public class MyStocksActivity extends AppCompatActivity implements
         if (isConnected) {
             long period = 3600L;
             long flex = 10L;
-            String periodicTag = "periodic";
+            String periodicTag = getString(R.string.tag_periodic);
 
             // create a periodic task to pull stocks once every hour after the app has been opened. This
             // is so Widget data stays up to date.
